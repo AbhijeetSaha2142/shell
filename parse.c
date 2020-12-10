@@ -42,10 +42,20 @@ char **parse_args(char *command)
 
 void run(char **args) 
 {
- //   char line[] = "ls -a -l";
-  //  char **args = parse_args(line);
-    execvp(args[0],args);
-    return 0;
+    int f = fork()
+
+    f = fork();
+
+    if (!f) {
+        execvp(args[0], args);
+    } 
+    
+    if (f)
+    {
+        int status;
+        int pid = wait(&status);
+    }
+
 }
 
 
