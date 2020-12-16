@@ -1,5 +1,5 @@
 ## ![ASK](https://i.imgur.com/Sk5asn7.gif)
-by Abhijeet Saha, Steven Lee, Kristoff Misquitta
+by Abhijeet Saha, Steven Lee, Kristoff Misquitta\
 TPNG: Team ASK
 
 ### Features
