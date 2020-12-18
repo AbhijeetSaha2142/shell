@@ -6,5 +6,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-char **parse_args(char *command);
-char **parse_commands(char *line);
+char **parse_args(char *);
+char **parse_commands(char *);
+void run_commands(char **);
