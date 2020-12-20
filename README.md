@@ -1,6 +1,6 @@
 ## ![ASK Shell](https://i.imgur.com/Sk5asn7.gif)
 by Abhijeet Saha, Steven Lee, Kristoff Misquitta\
-TPNG: Team ASK
+TNPG: Team ASK
 ---
 ### Features
 - Can fork and execute commands
