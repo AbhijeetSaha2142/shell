@@ -5,7 +5,9 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
-char **parse_args(char *);
-char **parse_pipes(char *);
-char **parse_commands(char *);
+int len_arr(char **);
+void run(char **);
+void run_pipes(char **);
+void run_commands(char **);

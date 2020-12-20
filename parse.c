@@ -9,13 +9,49 @@
 
 char **parse_commands(char *line) 
 {
-    char **commands = malloc(6 * sizeof(char *));
-    int i = 0;
+    // counts ;s
+    int semis = 0;
+    int i;
+    for (i = 0; line[i]; ++i)
+    {
+        if (line[i] == ';'){
+            ++semis;
+        }
+    }
+    char **commands = malloc((semis + 1) * sizeof(char *)); 
+    i = 0;
     while(commands[i] = strsep(&line, ";")) i++;
     return commands;
 }
 
-char **parse_args(char *command) //note that parse_args obliterates the argument.
+char **parse_pipes(char *command)
+{
+    // counts pipes
+    int pipes = 0;
+    int i;
+    for (i = 0; command[i]; ++i)
+    {
+        if (command[i] == '|'){
+            ++pipes;
+        }
+    }
+
+    char **pipe_args = malloc((pipes + 1) * sizeof(char *)); 
+    i = 0;
+    while(pipe_args[i] = strsep(&command, "|")) i++;
+    return pipe_args;
+}
+char **parse_in(char *command)
+{
+
+}
+
+char **parse_out(char *command)
+{
+
+}
+
+char **parse_args(char *command) //note that parse_args obliterates the argument, i.e. mutates it. 
 {
     // counts spaces
     int spaces = 0;
@@ -46,61 +82,6 @@ char **parse_args(char *command) //note that parse_args obliterates the argument
         i++;
     }
     return args;
-}
-
-void run(char **args) 
-{
-    //arg[0] is program, everything else arguments
-    int f = fork();
-
-    if (!f) {// child
-        execvp(args[0], args);
-    } 
-    
-    if (f) //parent 
-    {
-        int status;
-        int pid = wait(&status); 
-    }
-}
-
-void run_commands(char **commands) 
-{
-    int i = 0;
-    while(commands[i]) {
-        run(parse_args(commands[i]));
-        printf("\n");
-        i++;
-    }
-}
-
-void print_string_array(char **input) {
-    int i = 0;
-    while(input[i]) {
-        printf("[%s] ", input[i]); 
-        i++;
-    }
-    printf("\n");
-}
-
-int main1()
-{
-    char test[] = "ls -a -l ; cat makefile";
-    char **test_commands = parse_commands(test);
-    printf("commands: \n");
-    print_string_array(test_commands);
-
-    /*
-    printf("args for ls -a -l:  \n");
-    char **test_args0 = parse_args(test_commands[0]); 
-    print_string_array(test_args0);
-
-    printf("args for cat makefile:  \n");
-    char **test_args1 = parse_args(test_commands[1]); 
-    print_string_array(test_args1);
-    */
-    printf("ls -a -l ; cat makefile test:\n");
-    run_commands(test_commands);
 }
 
 
