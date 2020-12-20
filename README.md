@@ -5,10 +5,15 @@ TPNG: Team ASK
 ### Features
 - Can fork and execute commands
 - Multiple commands at once!
+- Basic Piping (only one pipe per command)
+- Redirection? 
+- Cd?
+- 
 
 ### Bugs
-
+- Error messages may sometimes not be displayed
+- Leftover children (?)
 ### Files & Function Headers:
-
+#### run.c
 #### parse.c
 #### main.c
