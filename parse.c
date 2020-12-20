@@ -7,75 +7,66 @@
 #include <time.h>
 #include <string.h>
 
-char **parse_commands(char *line) 
-{
-    // counts ;s
-    int semis = 0;
+int count_tokens(char *line, char symbol) {
+    int n = 0;
     int i;
     for (i = 0; line[i]; ++i)
     {
-        if (line[i] == ';'){
-            ++semis;
+        if(line[i] == symbol){
+            ++n; 
         }
     }
-    char **commands = malloc((semis + 1) * sizeof(char *)); 
-    i = 0;
+    return n + 1; 
+}
+
+char **parse_commands(char *line) 
+{
+    // counts ;s
+    int tokens = count_tokens(line, ';');
+    char **commands = malloc((tokens) * sizeof(char *)); 
+    int i = 0;
     while(commands[i] = strsep(&line, ";")) i++;
     return commands;
 }
 
 char **parse_pipes(char *command)
 {
-    // counts pipes
-    int pipes = 0;
-    int i;
-    for (i = 0; command[i]; ++i)
-    {
-        if (command[i] == '|'){
-            ++pipes;
-        }
-    }
-
-    char **pipe_args = malloc((pipes + 1) * sizeof(char *)); 
-    i = 0;
+    int tokens = count_tokens(command, '|'); 
+    char **pipe_args = malloc((tokens) * sizeof(char *)); 
+    int i = 0;
     while(pipe_args[i] = strsep(&command, "|")) i++;
     return pipe_args;
 }
-char **parse_in(char *command)
-{
 
+char **parse_redirs(char *command)
+{
+    int tokens = count_tokens(command, '>') + count_tokens(command, '<') - 1;
+    char **redir_args = malloc((tokens) * sizeof(char *)); 
+    int i = 0;
+    while(redir_args[i] = strsep(&command, "><")) i++;
+    return redir_args; 
 }
 
-char **parse_out(char *command)
-{
 
-}
 
 char **parse_args(char *command) //note that parse_args obliterates the argument, i.e. mutates it. 
 {
     // counts spaces
-    int spaces = 0;
-    int i;
-    for (i = 0; command[i]; ++i)
-    {
-        if (command[i] == ' '){
-            ++spaces;
-        }
-    }
+    int tokens = count_tokens(command, ' ');
     // subtracts spaces at beginning and end
     if (command[0] == ' ')
     {
-        spaces--;
+        tokens--;
         strsep(&command, " ");
     }
     if (command[strlen(command) - 1] ==  ' ')
     {
-        spaces--;
+        tokens--;
     }
 
-    char **args = malloc((spaces + 2) * sizeof(char *));
-    i = 0;
-    while(i < spaces + 1) 
+    char **args = malloc((tokens) * sizeof(char *));
+    int i = 0;
+    while(i < tokens) 
     { 
         
         args[i] = strsep(&command, " ");

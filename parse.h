@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+int count_tokens(char *, char);
 char **parse_args(char *);
 char **parse_pipes(char *);
+char **parse_redirs(char *);
 char **parse_commands(char *);

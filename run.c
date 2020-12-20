@@ -9,6 +9,8 @@
 #include <string.h>
 #include "parse.h"
 
+// order: commands > redir > pipes > args
+
 //length array
 int len_arr(char **input)
 {
@@ -19,21 +21,35 @@ int len_arr(char **input)
 
 void run(char **args) 
 {
-    //arg[0] is program, everything else arguments
-    int f = fork();
-
-    if (!f) {// child
-        int k = execvp(args[0], args);
+    // change directory
+    if (strcmp(args[0], "cd") == 0) {
+        int k = chdir(args[1]);
         if (k == -1) {
             printf("errno: %d\terror: %s\n", errno, strerror(errno));
         }
-    } 
-    
-    if (f) //parent 
-    {
-        int status;
-        int pid = wait(&status); 
     }
+    // exit
+    else if (strcmp(args[0], "exit") == 0) {
+        kill(getpid(), SIGKILL);
+    }
+    else {
+        //arg[0] is program, everything else arguments
+        int f = fork();
+
+        if (!f) {// child
+            int k = execvp(args[0], args);
+            if (k == -1) {
+                printf("errno: %d\terror: %s\n", errno, strerror(errno));
+            }
+        } 
+        
+        if (f) //parent 
+        {
+            int status;
+            int pid = wait(&status); 
+        }
+    }
+    
 }
 
 void run_pipes(char **pipe_args) { //can only run 2 argument pipes
@@ -67,11 +83,23 @@ void run_pipes(char **pipe_args) { //can only run 2 argument pipes
     }
 }
 
+// note that < exclusively redirects to input, > redirects to output
+void run_redirs(char **commands)
+{
+    if (len_arr(commands) == 1)
+    {
+        run_pipes(parse_pipes(commands[0])); 
+    }
+    else {
+        
+    }
+}
+
 void run_commands(char **commands) 
 {
     int i = 0;
     while(commands[i]) {
-        run_pipes(parse_pipes(commands[i]));
+        run_redirs(parse_redirs(commands[i]));
         printf("\n");
         i++;
     }

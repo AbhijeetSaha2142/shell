@@ -10,4 +10,5 @@
 int len_arr(char **);
 void run(char **);
 void run_pipes(char **);
+void run_redirs(char **);
 void run_commands(char **);
