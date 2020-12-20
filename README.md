@@ -1,4 +1,4 @@
-## ![ASK](https://i.imgur.com/Sk5asn7.gif)
+## ![ASK](https://i.imgur.com/Sk5asn7.if)
 by Abhijeet Saha, Steven Lee, Kristoff Misquitta\
 TPNG: Team ASK
 
