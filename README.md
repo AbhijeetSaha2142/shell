@@ -1,14 +1,13 @@
 ## ![ASK Shell](https://i.imgur.com/Sk5asn7.gif)
 by Abhijeet Saha, Steven Lee, Kristoff Misquitta\
 TNPG: Team ASK
----
+
 ### Features
 - Can fork and execute commands
 - Multiple commands at once!
 - Basic Piping (only one pipe per command)
 - Redirection? 
-- Cd?
-- 
+- Homemade cd and exit 
 ---
 ### Attempted Features
 ---
