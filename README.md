@@ -13,7 +13,6 @@ TNPG: Team ASK
 - Pipe Chaining (works)
 ---
 ### Bugs
-- When inputting the test.txt using redirection, weird error when running exit (no file or directory found) even though it works fine w/o redirection.
 - ls -l | grep "parse" doesn't output for some reason. 
 - Only works on linux systems (because of wait.h)
 - Error messages may sometimes not be displayed
