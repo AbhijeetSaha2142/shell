@@ -7,7 +7,9 @@
 #include <time.h>
 
 int count_tokens(char *, char);
+char *trim(char *);
 char **parse_args(char *);
 char **parse_pipes(char *);
 char **parse_redirs(char *);
+char *parse_redirs2(char *);
 char **parse_commands(char *);

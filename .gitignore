@@ -1,6 +1,9 @@
 # Prerequisites
 *.d
 
+testpipe.c
+test
+
 # Object files
 *.o
 *.ko

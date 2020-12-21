@@ -19,6 +19,16 @@ int count_tokens(char *line, char symbol) {
     return n + 1;
 }
 
+char *trim(char *str) {
+    char *end;
+
+    while(*str ==  ' ') str++; 
+    end = str + strlen(str) - 1;
+    while(end > str && *end == ' ') end--;
+    *(end+1) = '\0';
+    return str;
+}
+
 char **parse_commands(char *line)
 {
     // counts ;
@@ -47,7 +57,28 @@ char **parse_redirs(char *command)
     return redir_args;
 }
 
+char *parse_redirs2(char *command)
+{
+    int tokens = count_tokens(command, '>') + count_tokens(command, '<') - 1;
+    if (tokens < 1) return NULL;
+    char *redir_args2 = malloc((tokens + 1) * sizeof(char));
+    int i;
+    int c = 0;
+    for(i = 0; i < strlen(command); i++) {
+        if(command[i] == '>') {
+            redir_args2[c] = '>'; 
+            c++;
+        }
+        if(command[i] == '<') {
+            redir_args2[c] = '<';
+            c++; 
+        }
+    }
 
+    redir_args2[tokens] = '\0';
+
+    return redir_args2;
+}
 
 char **parse_args(char *command) //note that parse_args obliterates the argument, i.e. mutates it.
 {
@@ -64,13 +95,14 @@ char **parse_args(char *command) //note that parse_args obliterates the argument
         tokens--;
     }
 
-    char **args = malloc((tokens) * sizeof(char *));
+    char **args = malloc((tokens + 1) * sizeof(char *));
     int i = 0;
     while(i < tokens)
     {
 
-        args[i] = strsep(&command, " ");
+        args[i] = trim(strsep(&command, " "));
         i++;
     }
+    args[tokens] = '\0';
     return args;
 }

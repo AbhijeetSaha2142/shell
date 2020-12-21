@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <string.h>
 #include "parse.h"
+#include <fcntl.h>
 
 // order: commands > redir > pipes > args
 
@@ -25,7 +26,7 @@ void run(char **args)
     if (strcmp(args[0], "cd") == 0) {
         int k = chdir(args[1]);
         if (k == -1) {
-            printf("errno: %d\terror: %s\n", errno, strerror(errno));
+            printf("in run: errno: %d\terror: %s\n", errno, strerror(errno));
         }
     }
     // exit
@@ -36,19 +37,19 @@ void run(char **args)
     else if (strcmp(args[0], "rm") == 0) {
         int k = remove(args[1]);
         if (k == -1) {
-            printf("Remove failed");
+            printf("errno: %d\terror: %s\n", errno, strerror(errno));
         }
     }
-
+    
     else {
         //arg[0] is program, everything else arguments
         int f = fork();
-
         if (!f) {// child
             int k = execvp(args[0], args);
             if (k == -1) {
-                printf("errno: %d\terror: %s\n", errno, strerror(errno));
+                printf("in run: errno: %d\terror: %s\n", errno, strerror(errno));
             }
+            kill(getpid(), SIGKILL);
         }
 
         if (f) //parent
@@ -92,14 +93,68 @@ void run_pipes(char **pipe_args) { //can only run 2 argument pipes
 }
 
 // note that < exclusively redirects to input, > redirects to output
-void run_redirs(char **commands)
+void run_redirs(char **commands, char *args)
 {
     if (len_arr(commands) == 1)
     {
         run_pipes(parse_pipes(commands[0]));
     }
     else {
+        int i = 0;
+        int fdsin;
+        int fdsout;
+        int backup_sdin;
+        int backup_sdout;
+        int f = fork(); 
 
+        
+        if(!f) {
+            
+            while(args[i]) {
+            
+                if(args[i] == '>'){
+                    fdsout = open(trim(commands[i+1]), O_WRONLY | O_CREAT | O_TRUNC, 0644);
+                    if (fdsout == -1) {
+                        printf("in run_redirs: errno: %d\terror: %s\n", errno, strerror(errno));
+                    }
+                    backup_sdout = dup( STDOUT_FILENO );
+                    //redirects fdsout to stdout
+                    dup2(fdsout, STDOUT_FILENO);
+
+                }
+                if(args[i] == '<'){
+                    fdsin = open(trim(commands[i+1]), O_RDONLY);
+                    if (fdsin == -1) {
+                        printf("in run_redirs: errno: %d\terror: %s\n", errno, strerror(errno));
+                    }
+                    
+                    backup_sdin = dup( STDIN_FILENO );
+                    //redirects stdin to fdsin
+                    dup2(fdsin, STDIN_FILENO);
+                    printf("reached\n");
+                }
+                i++;
+            }
+            run_pipes(parse_pipes(commands[0]));
+
+            //closes
+            if (!fdsin) {
+                dup2(backup_sdin, STDIN_FILENO);
+                close(fdsin);
+            }
+            if (!fdsout) {
+                dup2(backup_sdout, STDOUT_FILENO);
+                close(fdsout);
+            }
+            kill(getpid(), SIGKILL);
+        }
+        if (f)
+        {
+            int status;
+            int pid = wait(&status);
+        }
+        
+        
     }
 }
 
@@ -107,32 +162,8 @@ void run_commands(char **commands)
 {
     int i = 0;
     while(commands[i]) {
-        run_redirs(parse_redirs(commands[i]));
-        printf("\n");
+        run_redirs(parse_redirs(commands[i]), parse_redirs2(commands[i]));
         i++;
     }
 }
-/*
-void redirs(char **redir_args){
-    int i = 0;
-    while(args[i] != NULL) {
-        int fds;
-        if(strcmp(args[i], ">") == 0){
-            fds = open(args[i+1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
-            //redirects stdout to fds
-            dup2(fds, STDOUT_FILENO);
-            close(fds);
-        }
-        if(strcmp(args[i], "<") == 0){
-            fds = open(args[i+1], O_RDONLY);
-
-            //redirects stdin to fds
-            dup2(fds, STDIN_FILENO);
-            args[i] = NULL;
-            close(fds);
-        }
-        i++;
-    }
-}
-*/
