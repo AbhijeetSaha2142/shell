@@ -17,7 +17,8 @@ TNPG: Team ASK
 - Error messages may sometimes not be displayed
 - Double redirection (ex. cat < makefile > out.txt) does not work (results in a seg fault)
 - two ;; breaks
-- Not really a bug but limited to 100 characters per line. 
+- Not really a bug but limited to 100 characters per line entered in the shell.
+- The current working directory is also limited to 100 characters. 
 ---
 ### Files & Function Headers:
 #### run.c
