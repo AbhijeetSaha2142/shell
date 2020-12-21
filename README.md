@@ -10,7 +10,8 @@ TNPG: Team ASK
 - Homemade cd and exit 
 ---
 ### Attempted Features
-- 
+- Double redirection, but doesn't work. 
+- Pipe chaining, but didn't work, so removed.
 ---
 ### Bugs
 - Error messages may sometimes not be displayed
