@@ -35,10 +35,15 @@ void run(char **args)
     }
 
     else if (strcmp(args[0], "rm") == 0) {
-        int k = remove(args[1]);
-        if (k == -1) {
-            printf("errno: %d\terror: %s\n", errno, strerror(errno));
+        int g = 1;
+        while(args[g]) {
+            int k = remove(args[g]);
+            if (k == -1) {
+                printf("errno: %d\terror: %s\n", errno, strerror(errno));
+            }
+            g++;
         }
+        
     }
     
     else {
@@ -131,7 +136,6 @@ void run_redirs(char **commands, char *args)
                     backup_sdin = dup( STDIN_FILENO );
                     //redirects stdin to fdsin
                     dup2(fdsin, STDIN_FILENO);
-                    printf("reached\n");
                 }
                 i++;
             }
