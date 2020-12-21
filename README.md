@@ -10,9 +10,11 @@ TNPG: Team ASK
 - Homemade cd and exit 
 ---
 ### Attempted Features
+- 
 ---
 ### Bugs
 - Error messages may sometimes not be displayed
+- Double redirection (ex. cat < makefile > out.txt) does not work (results in a seg fault)
 - two ;; breaks
 - Not really a bug but limited to 100 characters per line. 
 ---
@@ -46,6 +48,14 @@ a forked child process and pipes the stdout into the stdin of
 the second command, which is run in the parent process 
 ====================*/
 
+/*======== void run_redirs() ==========
+Inputs: char **commands, char *args
+Returns: nothing
+
+Inputs commands and args (args are > and < in a string).
+Handles redirections by setting stdin and stdout to files. 
+====================*/
+
 /*======== void run_commands() ==========
 Inputs: char **commands
 Returns: nothing
@@ -56,11 +66,40 @@ Inputs commands, runs them sequentially
 #### parse.c
 - Handles all parsing functions
 ```
+/*======== int count_tokens() ==========
+Inputs: char *line, char symbol
+Returns: Number of tokens
+
+Counts number of tokens separated by symbol
+====================*/
+
+/*======== char *trim() ==========
+Inputs: char *str
+Returns: str without the spaces at beginning and end
+
+Removes spaces at beginning and end of str.
+Note str has to be mutable.
+====================*/
+
 /*======== char **parse_commands() ==========
 Inputs: char *line
 Returns: Parsed commands
 
 Splits line by semicolon into commands 
+====================*/
+
+/*======== char **parse_redirs() ==========
+Inputs: char *command
+Returns: Parsed by < and > 
+
+Splits line by > and <
+====================*/
+
+/*======== char *parse_redirs2() ==========
+Inputs: char *command
+Returns: >s and <s
+
+Returns the >s and <s in order in a string. 
 ====================*/
 
 /*======== char **parse_pipes() ==========
@@ -88,5 +127,4 @@ Returns: nothing
 Puts together the entire thing 
 Makes the shell run
 ====================*/
-
 ```
