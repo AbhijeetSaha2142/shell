@@ -6,19 +6,17 @@ TNPG: Team ASK
 - Can fork and execute commands
 - Multiple commands at once!
 - Basic Piping (only one pipe per command)
-- Redirection? 
+- Redirection! 
 - Homemade cd and exit 
 ---
 ### Attempted Features
-- Double redirection, but doesn't work. 
-- Pipe chaining, but didn't work, so removed.
+- Pipe Chaining (works)
 ---
 ### Bugs
-- Test file (test.txt) must be inputted manually (no make run < test.txt). 
-    - Because double redirection doesn't work
+- When inputting the test.txt using redirection, weird error when running exit (no file or directory found) even though it works fine w/o redirection.
+- ls -l | grep "parse" doesn't output for some reason. 
 - Only works on linux systems (because of wait.h)
 - Error messages may sometimes not be displayed
-- Double redirection (ex. cat < makefile > out.txt) does not work (results in a seg fault)
 - two ;; breaks
 - Not really a bug but limited to 100 characters per line entered in the shell.
 - The current working directory is also limited to 100 characters. 
