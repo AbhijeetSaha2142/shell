@@ -14,6 +14,7 @@ TNPG: Team ASK
 - Pipe chaining, but didn't work, so removed.
 ---
 ### Bugs
+- Test file (test.txt) must be inputted manually (no make run < test.txt). 
 - Error messages may sometimes not be displayed
 - Double redirection (ex. cat < makefile > out.txt) does not work (results in a seg fault)
 - two ;; breaks
