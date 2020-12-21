@@ -141,7 +141,7 @@ void run_redirs(char **commands, char *args)
             }
             run_pipes(parse_pipes(commands[0]));
 
-            //closes
+            //closes and reverts redirection
             if (!fdsin) {
                 dup2(backup_sdin, STDIN_FILENO);
                 close(fdsin);

@@ -33,27 +33,30 @@ char **parse_commands(char *line)
 {
     // counts ;
     int tokens = count_tokens(line, ';');
-    char **commands = malloc((tokens) * sizeof(char *));
+    char **commands = malloc((tokens + 1) * sizeof(char *));
     int i = 0;
     while(commands[i] = strsep(&line, ";")) i++;
+    commands[tokens] = '\0';
     return commands;
 }
 
 char **parse_pipes(char *command)
 {
     int tokens = count_tokens(command, '|');
-    char **pipe_args = malloc((tokens) * sizeof(char *));
+    char **pipe_args = malloc((tokens + 1) * sizeof(char *));
     int i = 0;
     while(pipe_args[i] = strsep(&command, "|")) i++;
+    pipe_args[tokens] = '\0';
     return pipe_args;
 }
 
 char **parse_redirs(char *command)
 {
     int tokens = count_tokens(command, '>') + count_tokens(command, '<') - 1;
-    char **redir_args = malloc((tokens) * sizeof(char *));
+    char **redir_args = malloc((tokens + 1) * sizeof(char *));
     int i = 0;
     while(redir_args[i] = strsep(&command, "><")) i++;
+    redir_args[tokens] = '\0';
     return redir_args;
 }
 
