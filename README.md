@@ -15,6 +15,7 @@ TNPG: Team ASK
 - Error messages may sometimes not be displayed
 - Leftover children (?)
 - two ;; breaks
+- Not really a bug but limited to 100 characters per line. 
 ---
 ### Files & Function Headers:
 #### run.c
