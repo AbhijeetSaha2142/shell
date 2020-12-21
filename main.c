@@ -6,7 +6,7 @@
 #include "parse.h"
 #include "run.h"
 
-int main() 
+int main()
 {
     char cwd[100];
     char line[100];
@@ -15,14 +15,14 @@ int main()
     {
         if (getcwd(cwd, sizeof(cwd)) != NULL) printf("%s> ", cwd);
 
-        // input 
-         // line can only be 100 char
+        // input
+        // line can only be 100 char
         fgets(line, sizeof(line), stdin); 
         line[strlen(line) - 1] = '\0';
 
         char **commands = parse_commands(line);
-        
+
         run_commands(commands);
-   
+
     }
 }

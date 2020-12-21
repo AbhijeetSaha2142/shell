@@ -13,17 +13,17 @@ int count_tokens(char *line, char symbol) {
     for (i = 0; line[i]; ++i)
     {
         if(line[i] == symbol){
-            ++n; 
+            ++n;
         }
     }
-    return n + 1; 
+    return n + 1;
 }
 
-char **parse_commands(char *line) 
+char **parse_commands(char *line)
 {
-    // counts ;s
+    // counts ;
     int tokens = count_tokens(line, ';');
-    char **commands = malloc((tokens) * sizeof(char *)); 
+    char **commands = malloc((tokens) * sizeof(char *));
     int i = 0;
     while(commands[i] = strsep(&line, ";")) i++;
     return commands;
@@ -31,8 +31,8 @@ char **parse_commands(char *line)
 
 char **parse_pipes(char *command)
 {
-    int tokens = count_tokens(command, '|'); 
-    char **pipe_args = malloc((tokens) * sizeof(char *)); 
+    int tokens = count_tokens(command, '|');
+    char **pipe_args = malloc((tokens) * sizeof(char *));
     int i = 0;
     while(pipe_args[i] = strsep(&command, "|")) i++;
     return pipe_args;
@@ -41,15 +41,15 @@ char **parse_pipes(char *command)
 char **parse_redirs(char *command)
 {
     int tokens = count_tokens(command, '>') + count_tokens(command, '<') - 1;
-    char **redir_args = malloc((tokens) * sizeof(char *)); 
+    char **redir_args = malloc((tokens) * sizeof(char *));
     int i = 0;
     while(redir_args[i] = strsep(&command, "><")) i++;
-    return redir_args; 
+    return redir_args;
 }
 
 
 
-char **parse_args(char *command) //note that parse_args obliterates the argument, i.e. mutates it. 
+char **parse_args(char *command) //note that parse_args obliterates the argument, i.e. mutates it.
 {
     // counts spaces
     int tokens = count_tokens(command, ' ');
@@ -66,17 +66,11 @@ char **parse_args(char *command) //note that parse_args obliterates the argument
 
     char **args = malloc((tokens) * sizeof(char *));
     int i = 0;
-    while(i < tokens) 
-    { 
-        
+    while(i < tokens)
+    {
+
         args[i] = strsep(&command, " ");
         i++;
     }
     return args;
 }
-
-
-
-
-
-

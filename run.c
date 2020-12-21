@@ -16,10 +16,10 @@ int len_arr(char **input)
 {
     int i = 0;
     while(input[i]) i++;
-    return i; 
+    return i;
 }
 
-void run(char **args) 
+void run(char **args)
 {
     // change directory
     if (strcmp(args[0], "cd") == 0) {
@@ -32,6 +32,14 @@ void run(char **args)
     else if (strcmp(args[0], "exit") == 0) {
         kill(getpid(), SIGKILL);
     }
+
+    else if (strcmp(args[0], "rm") == 0) {
+        int k = remove(args[1]);
+        if (k == -1) {
+            printf("Remove failed");
+        }
+    }
+
     else {
         //arg[0] is program, everything else arguments
         int f = fork();
@@ -41,44 +49,44 @@ void run(char **args)
             if (k == -1) {
                 printf("errno: %d\terror: %s\n", errno, strerror(errno));
             }
-        } 
-        
-        if (f) //parent 
+        }
+
+        if (f) //parent
         {
             int status;
-            int pid = wait(&status); 
+            int pid = wait(&status);
         }
     }
-    
+
 }
 
 void run_pipes(char **pipe_args) { //can only run 2 argument pipes
-    if (len_arr(pipe_args)== 1) 
+    if (len_arr(pipe_args)== 1)
     {
         run(parse_args(pipe_args[0]));
     }
-    else 
+    else
     {
         int fds[2];
         pipe(fds);
         int f = fork();
         if (!f) {
-            close(fds[0]); 
+            close(fds[0]);
             int backup_sdout = dup( STDOUT_FILENO );
-            dup2(fds[1], STDOUT_FILENO); 
+            dup2(fds[1], STDOUT_FILENO);
             run(parse_args(pipe_args[0]));
-            dup2(backup_sdout, STDOUT_FILENO); 
-            kill(getpid(), SIGKILL);            
+            dup2(backup_sdout, STDOUT_FILENO);
+            kill(getpid(), SIGKILL);
         }
         if (f) {
-            int status; 
+            int status;
             int pid = wait(&status);
 
             close(fds[1]);
-            int backup_sdin = dup( STDIN_FILENO ); 
-            dup2(fds[0], STDIN_FILENO); 
+            int backup_sdin = dup( STDIN_FILENO );
+            dup2(fds[0], STDIN_FILENO);
             run(parse_args(pipe_args[1]));
-            dup2(backup_sdin, STDIN_FILENO); 
+            dup2(backup_sdin, STDIN_FILENO);
         }
     }
 }
@@ -88,14 +96,14 @@ void run_redirs(char **commands)
 {
     if (len_arr(commands) == 1)
     {
-        run_pipes(parse_pipes(commands[0])); 
+        run_pipes(parse_pipes(commands[0]));
     }
     else {
-        
+
     }
 }
 
-void run_commands(char **commands) 
+void run_commands(char **commands)
 {
     int i = 0;
     while(commands[i]) {
@@ -104,4 +112,27 @@ void run_commands(char **commands)
         i++;
     }
 }
+/*
+void redirs(char **redir_args){
+    int i = 0;
+    while(args[i] != NULL) {
+        int fds;
+        if(strcmp(args[i], ">") == 0){
+            fds = open(args[i+1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
+            //redirects stdout to fds
+            dup2(fds, STDOUT_FILENO);
+            close(fds);
+        }
+        if(strcmp(args[i], "<") == 0){
+            fds = open(args[i+1], O_RDONLY);
+
+            //redirects stdin to fds
+            dup2(fds, STDIN_FILENO);
+            args[i] = NULL;
+            close(fds);
+        }
+        i++;
+    }
+}
+*/
