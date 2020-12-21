@@ -15,7 +15,8 @@ TNPG: Team ASK
 ---
 ### Bugs
 - Test file (test.txt) must be inputted manually (no make run < test.txt). 
-    - Using make run < test.txt does not create files after redirection for some reason. 
+    - Because double redirection doesn't work
+- Only works on linux systems (because of wait.h)
 - Error messages may sometimes not be displayed
 - Double redirection (ex. cat < makefile > out.txt) does not work (results in a seg fault)
 - two ;; breaks
