@@ -5,6 +5,7 @@
 #include <sys/wait.h>
 #include "parse.h"
 #include "run.h"
+#include <ctype.h>
 
 int main()
 {
@@ -18,7 +19,8 @@ int main()
         // input
         // line can only be 100 char
         fgets(line, sizeof(line), stdin); 
-        line[strlen(line) - 1] = '\0';
+        if (isspace(line[strlen(line) - 1])) line[strlen(line) - 1] = '\0';
+        
 
         char **commands = parse_commands(line);
 
